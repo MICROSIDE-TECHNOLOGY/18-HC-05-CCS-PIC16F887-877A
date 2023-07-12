@@ -1,0 +1,292 @@
+CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:36
+
+               Filename:   E:\Martin Hdez\Desktop\CCS 16F\887\Práctica 18\HC05.lst
+
+               ROM used:   201 words (2%)
+                           Largest free fragment is 2048
+               RAM used:   8 (2%) at main() level
+                           12 (3%) worst case
+               Stack used: 0 locations
+               Stack size: 8
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   06B
+0003:  NOP
+.................... /* 
+....................   AUTOR: MICROSIDE TECHNOLOGY S.A. DE C.V. 
+....................   FECHA: JUNIO 2019 
+.................... */ 
+.................... /************************************************************************** 
+.................... Esta práctica consiste en realizar el envio de datos por medio de un módulo  
+.................... Bluetooth, usando el protocolo de comunicación serial UART, para enviar un  
+.................... comando simple para prender y apagar un LED incluido en la tarjeta X-TRAINER, 
+.................... y un segundo comando para preguntar el estado de un botón. 
+.................... **************************************************************************/ 
+....................   
+.................... #include  <16F887.h>                          // Para PIC18F4550 cambiar por: #include <18F4550.h> 
+.................... //////////// Standard Header file for the PIC16F887 device //////////////// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////        (C) Copyright 1996, 2014 Custom Computer Services          //// 
+.................... //// This source code may only be used by licensed users of the CCS C  //// 
+.................... //// compiler.  This source code may only be distributed to other      //// 
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
+.................... //// or distribution is permitted without written permission.          //// 
+.................... //// Derivative programs created using this software in object code    //// 
+.................... //// form are not restricted in any way.                               //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... #device PIC16F887 
+0004:  DATA CC,22
+0005:  DATA 44,10
+0006:  DATA 41,28
+0007:  DATA C1,23
+0008:  DATA 41,22
+0009:  DATA CF,06
+000A:  DATA 0A,00
+000B:  DATA CC,22
+000C:  DATA 44,10
+000D:  DATA 45,27
+000E:  DATA C3,22
+000F:  DATA 4E,22
+0010:  DATA 49,22
+0011:  DATA CF,06
+0012:  DATA 0A,00
+0013:  MOVF   0B,W
+0014:  MOVWF  23
+0015:  BCF    0B.7
+0016:  BSF    03.5
+0017:  BSF    03.6
+0018:  BSF    0C.7
+0019:  BSF    0C.0
+001A:  NOP
+001B:  NOP
+001C:  BCF    03.5
+001D:  BCF    03.6
+001E:  BTFSC  23.7
+001F:  BSF    0B.7
+0020:  BSF    03.6
+0021:  MOVF   0C,W
+0022:  ANDLW  7F
+0023:  BTFSC  03.2
+0024:  GOTO   069
+0025:  BCF    03.6
+0026:  MOVWF  23
+0027:  BSF    03.6
+0028:  MOVF   0D,W
+0029:  BCF    03.6
+002A:  MOVWF  24
+002B:  BSF    03.6
+002C:  MOVF   0F,W
+002D:  BCF    03.6
+002E:  MOVWF  25
+002F:  MOVF   23,W
+0030:  BTFSS  0C.4
+0031:  GOTO   030
+0032:  MOVWF  19
+0033:  MOVF   24,W
+0034:  BSF    03.6
+0035:  MOVWF  0D
+0036:  BCF    03.6
+0037:  MOVF   25,W
+0038:  BSF    03.6
+0039:  MOVWF  0F
+003A:  BCF    03.6
+003B:  MOVF   0B,W
+003C:  MOVWF  26
+003D:  BCF    0B.7
+003E:  BSF    03.5
+003F:  BSF    03.6
+0040:  BSF    0C.7
+0041:  BSF    0C.0
+0042:  NOP
+0043:  NOP
+0044:  BCF    03.5
+0045:  BCF    03.6
+0046:  BTFSC  26.7
+0047:  BSF    0B.7
+0048:  BSF    03.6
+0049:  RLF    0C,W
+004A:  RLF    0E,W
+004B:  ANDLW  7F
+004C:  BTFSC  03.2
+004D:  GOTO   069
+004E:  BCF    03.6
+004F:  MOVWF  23
+0050:  BSF    03.6
+0051:  MOVF   0D,W
+0052:  BCF    03.6
+0053:  MOVWF  24
+0054:  BSF    03.6
+0055:  MOVF   0F,W
+0056:  BCF    03.6
+0057:  MOVWF  25
+0058:  MOVF   23,W
+0059:  BTFSS  0C.4
+005A:  GOTO   059
+005B:  MOVWF  19
+005C:  MOVF   24,W
+005D:  BSF    03.6
+005E:  MOVWF  0D
+005F:  BCF    03.6
+0060:  MOVF   25,W
+0061:  BSF    03.6
+0062:  MOVWF  0F
+0063:  INCF   0D,F
+0064:  BTFSC  03.2
+0065:  INCF   0F,F
+0066:  BCF    03.6
+0067:  GOTO   013
+0068:  BSF    03.6
+0069:  BCF    03.6
+006A:  RETURN
+....................  
+.................... #list 
+....................  
+.................... #use delay(clock=20Mhz, crystal)                //Tipo de oscilador y frecuencia dependiendo del microcontrolador  
+....................  
+.................... //------------------------------------------------------------------------------- 
+.................... #USE RS232(stream=SERIE, BAUD=9600, PARITY=N, XMIT=PIN_C6, RCV=PIN_C7,BITS=8) 
+.................... #define LED pin_A1 
+.................... #define Boton pin_A2 
+....................  
+.................... void main(void) 
+006B:  MOVF   03,W
+006C:  ANDLW  1F
+006D:  MOVWF  03
+006E:  BSF    03.5
+006F:  BSF    03.6
+0070:  BSF    07.3
+0071:  MOVLW  08
+0072:  BCF    03.6
+0073:  MOVWF  19
+0074:  MOVLW  02
+0075:  MOVWF  1A
+0076:  MOVLW  A6
+0077:  MOVWF  18
+0078:  MOVLW  90
+0079:  BCF    03.5
+007A:  MOVWF  18
+007B:  CLRF   21
+007C:  CLRF   20
+007D:  BSF    03.5
+007E:  BSF    03.6
+007F:  MOVF   09,W
+0080:  ANDLW  C0
+0081:  MOVWF  09
+0082:  BCF    03.6
+0083:  BCF    1F.4
+0084:  BCF    1F.5
+0085:  MOVLW  00
+0086:  BSF    03.6
+0087:  MOVWF  08
+0088:  BCF    03.5
+0089:  CLRF   07
+008A:  CLRF   08
+008B:  CLRF   09
+008C:  BCF    03.7
+.................... { 
+....................  
+.................... while(!kbhit()) //Pregunta si hay algun dato recibido 
+008D:  BCF    03.6
+008E:  BTFSC  0C.5
+008F:  GOTO   0C8
+.................... while (TRUE) 
+....................  { 
+....................          
+....................         
+....................         
+....................        char Caracter = getc (); //Guarda el caracter 
+0090:  BTFSS  0C.5
+0091:  GOTO   090
+0092:  MOVF   1A,W
+0093:  MOVWF  22
+....................        if (Caracter == '0') 
+0094:  MOVF   22,W
+0095:  SUBLW  30
+0096:  BTFSS  03.2
+0097:  GOTO   0A4
+....................        { 
+....................           output_low (LED); //Apaga el LED 
+0098:  BSF    03.5
+0099:  BCF    05.1
+009A:  BCF    03.5
+009B:  BCF    05.1
+....................            fprintf(SERIE,"LED APAGADO\r\n"); 
+009C:  MOVLW  04
+009D:  BSF    03.6
+009E:  MOVWF  0D
+009F:  MOVLW  00
+00A0:  MOVWF  0F
+00A1:  BCF    03.6
+00A2:  CALL   013
+....................        } 
+00A3:  GOTO   0C6
+....................  
+....................        else if (Caracter == '1') 
+00A4:  MOVF   22,W
+00A5:  SUBLW  31
+00A6:  BTFSS  03.2
+00A7:  GOTO   0B4
+....................        { 
+....................           output_HIGH (LED); //Enciende el LED 
+00A8:  BSF    03.5
+00A9:  BCF    05.1
+00AA:  BCF    03.5
+00AB:  BSF    05.1
+....................            fprintf(SERIE,"LED ENCENDIDO\r\n"); 
+00AC:  MOVLW  0B
+00AD:  BSF    03.6
+00AE:  MOVWF  0D
+00AF:  MOVLW  00
+00B0:  MOVWF  0F
+00B1:  BCF    03.6
+00B2:  CALL   013
+....................        } 
+00B3:  GOTO   0C6
+....................  
+....................         
+....................        else if (Caracter == '?') 
+00B4:  MOVF   22,W
+00B5:  SUBLW  3F
+00B6:  BTFSS  03.2
+00B7:  GOTO   0C6
+....................        { 
+....................            
+....................           if (1 == input (Boton)) 
+00B8:  BSF    03.5
+00B9:  BSF    05.2
+00BA:  BCF    03.5
+00BB:  BTFSS  05.2
+00BC:  GOTO   0C2
+....................           { 
+....................              //Pregunta el estado del botón 
+....................              Printf ("1"); //Envía un 0 si el botón no está presionado 
+00BD:  MOVLW  31
+00BE:  BTFSS  0C.4
+00BF:  GOTO   0BE
+00C0:  MOVWF  19
+....................           } 
+00C1:  GOTO   0C6
+....................  
+....................           else 
+....................           { 
+....................              Printf ("0"); //Envía un 1 si el botón está presionado 
+00C2:  MOVLW  30
+00C3:  BTFSS  0C.4
+00C4:  GOTO   0C3
+00C5:  MOVWF  19
+....................           } 
+....................  
+....................        } 
+00C6:  GOTO   090
+00C7:  GOTO   08E
+....................         
+....................   }  
+.................... } 
+....................  
+00C8:  SLEEP
+
+Configuration Fuses:
+   Word  1: 2FE2   HS NOWDT PUT MCLR NOPROTECT NOCPD BROWNOUT IESO FCMEN NOLVP NODEBUG
+   Word  2: 3FFF   BORV40 NOWRT
