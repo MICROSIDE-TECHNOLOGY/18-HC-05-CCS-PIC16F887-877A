@@ -2,8 +2,8 @@
 ROM used:   188/8192 (2%)
             188/8192 (2%) including unused fragments
 
-            0.3 Average locations per line
-            10.4 Average locations per statement
+            0.2 Average locations per line
+            9.9 Average locations per statement
 
 RAM used:   8/368 (2%) at main() level
             12/368 (3%) worst case
@@ -13,30 +13,30 @@ Stack size: 8
 
 Lines Stmts  %   Files
 ----- ----- ---  -----
-   62    18 100  HC05.c
-  684     0   0  ..\..\..\..\..\Program Files\PICC\Devices\16F877A.h
+   51    19 100  HC05.c
+  708     0   0  ..\..\..\..\..\..\..\..\..\..\Program Files (x86)\PICCDEMO\Devices\16F877A.h
 ----- -----
-  746    18 Total
+  759    19 Total
 
 Page ROM  %  RAM    Vol Diff  Functions:
 ---- --- --- ---    --- ----  ----------
-0     81  43    1    410  4.5  main
-0      7   4    0    328  2.7  @const642
-0     88  47    4    165  3.3  @PSTRINGC7_9600_62_63
-0      8   4    0    319  4.1  @const647
- Inline         0    275  3.9  @cinit1
+0     81  43    1    415  4.5  main
+0      7   4    0             @const705
+0     88  47    4             @PSTRINGC7_9600_62_63
+0      8   4    0             @const710
+ Inline         0             @cinit1
 
 Program metrics:
-    Functions               5
-    Statements              18
-    Comments                150
-    Volume (V)              2163
-    Difficulty (D)          18.5
-    Effort to implement (E) 39983
-    Time to implement (T)   37 minutes
+    Functions               1
+    Statements              19
+    Comments                160
+    Volume (V)              425
+    Difficulty (D)          4.0
+    Effort to implement (E) 1713
+    Time to implement (T)   2 minutes
     Est Delivered Bugs (B)  0
-    Cyclomatic Complexity   9
-    Maintainability (MI)    159
+    Cyclomatic Complexity   4
+    Maintainability (MI)    125
 
  Segment     Used  Free
 -----------  ----  ----

@@ -1,6 +1,8 @@
-CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:36
+CCS PCM C Compiler, Version 5.115d, 1               30-ago.-23 11:54
+Compiler operating in Evaluation Mode
+To obtain a fully enabled compiler visit www.ccsinfo.com/products
 
-               Filename:   E:\Martin Hdez\Desktop\CCS 16F\887\Práctica 18\HC05.lst
+               Filename:   C:\Users\victo\OneDrive\Documentos\X-TRAINER-hands-on\CCS\PIC16F\18-HC-05-CCS-PIC16F887-877A\Proyecto\PIC16F887\HC05.lst
 
                ROM used:   201 words (2%)
                            Largest free fragment is 2048
@@ -14,29 +16,35 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:36
 0001:  MOVWF  0A
 0002:  GOTO   06B
 0003:  NOP
-.................... /* 
-....................   AUTOR: MICROSIDE TECHNOLOGY S.A. DE C.V. 
-....................   FECHA: JUNIO 2019 
-.................... */ 
-.................... /************************************************************************** 
-.................... Esta práctica consiste en realizar el envio de datos por medio de un módulo  
-.................... Bluetooth, usando el protocolo de comunicación serial UART, para enviar un  
-.................... comando simple para prender y apagar un LED incluido en la tarjeta X-TRAINER, 
-.................... y un segundo comando para preguntar el estado de un botón. 
-.................... **************************************************************************/ 
-....................   
-.................... #include  <16F887.h>                          // Para PIC18F4550 cambiar por: #include <18F4550.h> 
-.................... //////////// Standard Header file for the PIC16F887 device //////////////// 
-.................... /////////////////////////////////////////////////////////////////////////// 
-.................... ////        (C) Copyright 1996, 2014 Custom Computer Services          //// 
-.................... //// This source code may only be used by licensed users of the CCS C  //// 
-.................... //// compiler.  This source code may only be distributed to other      //// 
-.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
-.................... //// or distribution is permitted without written permission.          //// 
-.................... //// Derivative programs created using this software in object code    //// 
-.................... //// form are not restricted in any way.                               //// 
-.................... /////////////////////////////////////////////////////////////////////////// 
-.................... #device PIC16F887 
+.................... /************************************************************************************************
+.................... Company:
+.................... Microside Technology Inc.
+.................... File Name:
+.................... HC05.c
+.................... Product Revision  :  1
+.................... Device            :  X-TRAINER
+.................... Driver Version    :  1.0
+.................... ************************************************************************************************/
+.................... 
+.................... /**************************************************************************
+.................... Esta práctica consiste en realizar el envio de datos por medio de un módulo
+.................... Bluetooth, usando el protocolo de comunicación serial UART, para enviar un
+.................... comando simple para prender y apagar un LED incluido en la tarjeta X-TRAINER,
+.................... y un segundo comando para preguntar el estado de un botón.
+.................... **************************************************************************/
+.................... 
+.................... #include <16F887.h>                      // Incluye el microcontrolador con el que se va a trabajar
+.................... //////////// Standard Header file for the PIC16F887 device ////////////////
+.................... ///////////////////////////////////////////////////////////////////////////
+.................... ////        (C) Copyright 1996, 2020 Custom Computer Services          ////
+.................... //// This source code may only be used by licensed users of the CCS C  ////
+.................... //// compiler.  This source code may only be distributed to other      ////
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction ////
+.................... //// or distribution is permitted without written permission.          ////
+.................... //// Derivative programs created using this software in object code    ////
+.................... //// form are not restricted in any way.                               ////
+.................... ///////////////////////////////////////////////////////////////////////////
+.................... #device PIC16F887
 0004:  DATA CC,22
 0005:  DATA 44,10
 0006:  DATA 41,28
@@ -140,17 +148,18 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:36
 0068:  BSF    03.6
 0069:  BCF    03.6
 006A:  RETURN
-....................  
-.................... #list 
-....................  
-.................... #use delay(clock=20Mhz, crystal)                //Tipo de oscilador y frecuencia dependiendo del microcontrolador  
-....................  
-.................... //------------------------------------------------------------------------------- 
-.................... #USE RS232(stream=SERIE, BAUD=9600, PARITY=N, XMIT=PIN_C6, RCV=PIN_C7,BITS=8) 
-.................... #define LED pin_A1 
-.................... #define Boton pin_A2 
-....................  
-.................... void main(void) 
+.................... 
+.................... #list
+.................... 
+.................... #use delay( clock = 20Mhz, crystal )     // Tipo de oscilador y frecuencia dependiendo del microcontrolador
+.................... 
+.................... //-------------------------------------------------------------------------------
+.................... #USE RS232( stream = SERIE, BAUD = 9600, PARITY = N, XMIT = PIN_C6, RCV = PIN_C7, BITS = 8 )
+.................... 
+.................... #define LED pin_A1
+.................... #define Boton pin_A2
+.................... 
+.................... void main( void ) {
 006B:  MOVF   03,W
 006C:  ANDLW  1F
 006D:  MOVWF  03
@@ -185,34 +194,30 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:36
 008A:  CLRF   08
 008B:  CLRF   09
 008C:  BCF    03.7
-.................... { 
-....................  
-.................... while(!kbhit()) //Pregunta si hay algun dato recibido 
+.................... 
+....................    while ( !kbhit() ) {                  // Pregunta si hay algun dato recibido
 008D:  BCF    03.6
 008E:  BTFSC  0C.5
 008F:  GOTO   0C8
-.................... while (TRUE) 
-....................  { 
-....................          
-....................         
-....................         
-....................        char Caracter = getc (); //Guarda el caracter 
+....................       
+....................       while ( 1 ) {
+....................          char Caracter = getc();         // Guarda el caracter
 0090:  BTFSS  0C.5
 0091:  GOTO   090
 0092:  MOVF   1A,W
 0093:  MOVWF  22
-....................        if (Caracter == '0') 
+.................... 
+....................          if ( Caracter == '0' ) {
 0094:  MOVF   22,W
 0095:  SUBLW  30
 0096:  BTFSS  03.2
 0097:  GOTO   0A4
-....................        { 
-....................           output_low (LED); //Apaga el LED 
+....................             output_low( LED );           // Apaga el LED
 0098:  BSF    03.5
 0099:  BCF    05.1
 009A:  BCF    03.5
 009B:  BCF    05.1
-....................            fprintf(SERIE,"LED APAGADO\r\n"); 
+....................             fprintf( SERIE, "LED APAGADO\r\n" );
 009C:  MOVLW  04
 009D:  BSF    03.6
 009E:  MOVWF  0D
@@ -220,21 +225,18 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:36
 00A0:  MOVWF  0F
 00A1:  BCF    03.6
 00A2:  CALL   013
-....................        } 
+....................          } else if ( Caracter == '1' ) {
 00A3:  GOTO   0C6
-....................  
-....................        else if (Caracter == '1') 
 00A4:  MOVF   22,W
 00A5:  SUBLW  31
 00A6:  BTFSS  03.2
 00A7:  GOTO   0B4
-....................        { 
-....................           output_HIGH (LED); //Enciende el LED 
+....................             output_HIGH( LED );          // Enciende el LED
 00A8:  BSF    03.5
 00A9:  BCF    05.1
 00AA:  BCF    03.5
 00AB:  BSF    05.1
-....................            fprintf(SERIE,"LED ENCENDIDO\r\n"); 
+....................             fprintf( SERIE, "LED ENCENDIDO\r\n" );
 00AC:  MOVLW  0B
 00AD:  BSF    03.6
 00AE:  MOVWF  0D
@@ -242,49 +244,38 @@ CCS PCM C Compiler, Version 5.076, 56587               24-feb.-22 15:36
 00B0:  MOVWF  0F
 00B1:  BCF    03.6
 00B2:  CALL   013
-....................        } 
+....................          } else if ( Caracter == '?' ) {
 00B3:  GOTO   0C6
-....................  
-....................         
-....................        else if (Caracter == '?') 
 00B4:  MOVF   22,W
 00B5:  SUBLW  3F
 00B6:  BTFSS  03.2
 00B7:  GOTO   0C6
-....................        { 
-....................            
-....................           if (1 == input (Boton)) 
+.................... 
+....................             if ( 1 == input( Boton ) ) { // Pregunta el estado del botón
 00B8:  BSF    03.5
 00B9:  BSF    05.2
 00BA:  BCF    03.5
 00BB:  BTFSS  05.2
 00BC:  GOTO   0C2
-....................           { 
-....................              //Pregunta el estado del botón 
-....................              Printf ("1"); //Envía un 0 si el botón no está presionado 
-00BD:  MOVLW  31
+....................                Printf( "0" );            // Envía un 0 si el botón no está presionado
+00BD:  MOVLW  30
 00BE:  BTFSS  0C.4
 00BF:  GOTO   0BE
 00C0:  MOVWF  19
-....................           } 
+....................             } else {
 00C1:  GOTO   0C6
-....................  
-....................           else 
-....................           { 
-....................              Printf ("0"); //Envía un 1 si el botón está presionado 
-00C2:  MOVLW  30
+....................                Printf( "1" );            // Envía un 1 si el botón está presionado
+00C2:  MOVLW  31
 00C3:  BTFSS  0C.4
 00C4:  GOTO   0C3
 00C5:  MOVWF  19
-....................           } 
-....................  
-....................        } 
+....................             }
+....................          }
 00C6:  GOTO   090
+....................       }
 00C7:  GOTO   08E
-....................         
-....................   }  
-.................... } 
-....................  
+....................    }
+.................... }
 00C8:  SLEEP
 
 Configuration Fuses:
